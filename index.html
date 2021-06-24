@@ -158,9 +158,18 @@
         }
       },
       dragOverCategory(overCategory) {
-        if (this.task.category_id !== overCategory.id) {
-          let tasks = this.tasks.filter(task => task.category_id === overCategory.id);
-          if (tasks.length === 0) this.task.category_id = overCategory.id;
+        if (overCategory.id !== this.category.id && this.type === "category") {
+          let deleteIndex;
+          let addIndex;
+          this.categories.map((category, index) => { if (category.id === this.category.id) deleteIndex = index });
+          this.categories.map((category, index) => { if (category.id === overCategory.id) addIndex = index });
+          this.categories.splice(deleteIndex, 1);
+          this.categories.splice(addIndex, 0, this.category);
+        } else {
+          if (this.task.category_id !== overCategory.id && this.type === "task") {
+            let tasks = this.tasks.filter(task => task.category_id === overCategory.id);
+            if (tasks.length === 0) this.task.category_id = overCategory.id;
+          }
         }
       }
     }
